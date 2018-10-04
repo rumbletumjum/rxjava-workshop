@@ -4,7 +4,8 @@ target
 *.iml
 .idea
 classes
+out
+.settings
 .classpath
 .project
-.settings
-/bin/
+bin
