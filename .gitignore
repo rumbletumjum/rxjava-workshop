@@ -5,3 +5,7 @@ target
 .idea
 classes
 out
+.settings
+.classpath
+.project
+bin
