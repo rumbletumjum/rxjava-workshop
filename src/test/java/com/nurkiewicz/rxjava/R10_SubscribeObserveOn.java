@@ -1,5 +1,6 @@
 package com.nurkiewicz.rxjava;
 
+import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import com.nurkiewicz.rxjava.util.Sleeper;
 import io.reactivex.Flowable;
 import io.reactivex.Scheduler;
@@ -11,6 +12,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadFactory;
 
 import static java.time.Duration.ofMillis;
 import static java.time.Duration.ofSeconds;
@@ -31,6 +35,7 @@ public class R10_SubscribeObserveOn {
 				.subscribe(
 						x -> log.info("Got: {}", x)
 				);
+		log.info("After subscribe");
 		Sleeper.sleep(ofMillis(1_100));
 	}
 	
@@ -91,7 +96,12 @@ public class R10_SubscribeObserveOn {
 	 * Hint: ThreadFactoryBuilder
 	 */
 	private Scheduler myCustomScheduler() {
-		return Schedulers.io();
+		ThreadFactory threadFactory = new ThreadFactoryBuilder()
+				.setNameFormat("CustomExecutor-%d")
+				.build();
+		ExecutorService executor = Executors
+				.newFixedThreadPool(10, threadFactory);
+		return Schedulers.from(executor);
 	}
 	
 	
